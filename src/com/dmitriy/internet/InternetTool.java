@@ -19,6 +19,17 @@ public class InternetTool{
     private static final int WHOIS_PORT = 43;
     private static final int WHOIS_SOCKET_TIMEOUT = 10000;
 
+    //email send and read section
+    //Sender must be a Gmail Account holder
+    private static final String MAIL_FROM = ""; //TODO: sender email should be here
+    //but here you can send to any type of mail account
+    private static final String MAIL_TO = ""; //TODO: recipient email should be here
+    private static final String SENDER_PASSWORD = ""; //TODO: sender password should be here
+    //Mention your email subject and content
+    private static final String MAIL_SUBJECT = "QA engineer in South Africa.";
+    private static final String MAIL_TEXT =
+            "Hallo, Andrey. Sorry. We have been already found this stupid guy who need this job.";
+    private static final String GMAIL_FOLDER_NAME = "INBOX";
 
 
 
@@ -55,7 +66,12 @@ public class InternetTool{
         }
 
         whoIs(GOOGLE_IP);
+
+        sendEmail(MAIL_FROM, SENDER_PASSWORD, MAIL_SUBJECT, MAIL_TEXT, MAIL_TO);
+
+        readEmails(MAIL_FROM, SENDER_PASSWORD, GMAIL_FOLDER_NAME);
     }
+
 
     private static void getFileFromURL(String address) throws MalformedURLException {
         URL page = new URL(address);
@@ -135,5 +151,23 @@ public class InternetTool{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void sendEmail(String mailFrom, String senderPassword, String mailSubject, String mailText, String mailTo) {
+        //Create a GmailClient object
+        GmailClient newGmailClient=new GmailClient();
+        //Setting up account details
+        newGmailClient.setAccountDetails(mailFrom, senderPassword);
+        //Send mail
+        newGmailClient.sendGmail(mailFrom, mailTo, mailSubject, mailText);
+    }
+
+    private static void readEmails(String mailFrom, String senderPassword, String gmailFolderName) {
+        //Create a GmailClient object
+        GmailClient newGmailClient=new GmailClient();
+        //Setting up account details
+        newGmailClient.setAccountDetails(mailFrom, senderPassword);
+        //Send mail
+        newGmailClient.readGmail(gmailFolderName);
     }
 }
